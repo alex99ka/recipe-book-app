@@ -19,6 +19,7 @@ The first version for the phone and the web (1.0.0 was a test build only).
   Settings → "סיור מודרך באפליקציה" plays it again.
 - Settings: choose the household book, monthly import count, version and updates.
 - Its own icon: an open cookbook with steam rising, on terracotta.
+- Recipes from TikTok get a "לסרטון בטיקטוק" button that opens the video.
 
 ### Fixed
 - "Check for updates" no longer blames the internet connection when there is

@@ -20,7 +20,7 @@ import {
   type SegmentCustomEvent,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { cartOutline, linkOutline, star, starHalf, starOutline } from 'ionicons/icons';
+import { cartOutline, linkOutline, logoTiktok, star, starHalf, starOutline } from 'ionicons/icons';
 import { ApiError, ApiService } from '../../core';
 import { RecipeDetail } from '../../models';
 import { AlertService, pretty, scaleIngredient } from '../../shared';
@@ -52,6 +52,7 @@ import { AlertService, pretty, scaleIngredient } from '../../shared';
     h1 { margin: 16px 0 4px; }
     .stars ion-button { --padding-start: 2px; --padding-end: 2px; margin: 0; }
     .meta { color: var(--ion-color-medium); margin: 4px 0 12px; }
+    .tiktok { margin: 8px 0; }
     h3 { margin: 24px 0 8px; }
     ul, ol { padding-inline-start: 20px; margin: 0; }
     li { margin: 6px 0; line-height: 1.5; }
@@ -88,6 +89,12 @@ import { AlertService, pretty, scaleIngredient } from '../../shared';
               </ion-button>
             }
           </div>
+          @if (isTikTok(r.sourceUrl)) {
+            <ion-button class="tiktok" expand="block" color="dark" [href]="r.sourceUrl" target="_blank" rel="noopener">
+              <ion-icon slot="start" name="logo-tiktok" aria-hidden="true"></ion-icon>
+              לסרטון בטיקטוק
+            </ion-button>
+          }
           @if (r.servings || r.totalTime) {
             <p class="meta">
               @if (r.servings) { {{ r.servings }} מנות }
@@ -154,7 +161,7 @@ import { AlertService, pretty, scaleIngredient } from '../../shared';
               <ion-chip>{{ t }}</ion-chip>
             }
           }
-          @if (r.sourceUrl) {
+          @if (r.sourceUrl && !isTikTok(r.sourceUrl)) {
             <ion-button fill="clear" size="small" [href]="r.sourceUrl" target="_blank" rel="noopener">
               <ion-icon slot="start" name="link-outline" aria-hidden="true"></ion-icon>
               למקור
@@ -185,7 +192,7 @@ export class RecipePage implements OnInit {
   );
 
   constructor() {
-    addIcons({ cartOutline, linkOutline, star, starHalf, starOutline });
+    addIcons({ cartOutline, linkOutline, logoTiktok, star, starHalf, starOutline });
   }
 
   ngOnInit(): void {
@@ -199,6 +206,15 @@ export class RecipePage implements OnInit {
 
   protected setFactor(event: SegmentCustomEvent): void {
     this.factor.set(Number(event.detail.value));
+  }
+
+  /** Same rule as the server's video.py: any tiktok.com host, short share links included. */
+  protected isTikTok(url: string): boolean {
+    try {
+      return /(^|\.)tiktok\.com$/i.test(new URL(url).hostname);
+    } catch {
+      return false;
+    }
   }
 
   protected starIcon(i: number): string {
