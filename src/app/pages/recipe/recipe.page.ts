@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input, signal } from '@angular/core';
 import {
+  AlertController,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -20,10 +21,10 @@ import {
   type SegmentCustomEvent,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { cartOutline, linkOutline, logoTiktok, star, starHalf, starOutline } from 'ionicons/icons';
+import { bookmarkOutline, cartOutline, linkOutline, logoTiktok, star, starHalf, starOutline } from 'ionicons/icons';
 import { ApiError, ApiService } from '../../core';
-import { RecipeDetail } from '../../models';
-import { AlertService, pretty, scaleIngredient } from '../../shared';
+import { Collection, RecipeDetail } from '../../models';
+import { AlertService, askTitle, pretty, scaleIngredient } from '../../shared';
 
 @Component({
   selector: 'app-recipe',
@@ -137,6 +138,13 @@ import { AlertService, pretty, scaleIngredient } from '../../shared';
               </ion-note>
             }
           }
+          <ion-button data-tour="add-to-book" expand="block" fill="outline" (click)="fileInBooks()">
+            <ion-icon slot="start" name="bookmark-outline" aria-hidden="true"></ion-icon>
+            הוספה לספר
+            @if (r.collections.length) {
+              <ion-note slot="end">&nbsp;· ב־{{ r.collections.length }} ספרים</ion-note>
+            }
+          </ion-button>
           <ion-button data-tour="shopping" expand="block" fill="outline" [disabled]="shopping()" (click)="addToShoppingList()">
             @if (shopping()) {
               <ion-spinner slot="start" name="crescent"></ion-spinner>
@@ -177,6 +185,7 @@ import { AlertService, pretty, scaleIngredient } from '../../shared';
 export class RecipePage implements OnInit {
   protected readonly api = inject(ApiService);
   private readonly alert = inject(AlertService);
+  private readonly alerts = inject(AlertController);
   /** Route param, bound by withComponentInputBinding. */
   readonly id = input.required<string>();
 
@@ -192,7 +201,7 @@ export class RecipePage implements OnInit {
   );
 
   constructor() {
-    addIcons({ cartOutline, linkOutline, logoTiktok, star, starHalf, starOutline });
+    addIcons({ bookmarkOutline, cartOutline, linkOutline, logoTiktok, star, starHalf, starOutline });
   }
 
   ngOnInit(): void {
@@ -235,6 +244,60 @@ export class RecipePage implements OnInit {
       this.recipe.set(r);
       await this.alert.presentToast(e instanceof ApiError ? e.message : 'הדירוג לא נשמר.');
     }
+  }
+
+  /** Tick the book's own cookbooks this recipe belongs in, or start a new one. */
+  protected async fileInBooks(): Promise<void> {
+    const r = this.recipe();
+    if (!r) return;
+    let collections: Collection[];
+    try {
+      collections = await this.api.collections();
+    } catch (e) {
+      await this.alert.presentToast(e instanceof ApiError ? e.message : 'הספרים לא נטענו.');
+      return;
+    }
+    const picker = await this.alerts.create({
+      header: 'הוספה לספר',
+      message: collections.length ? undefined : 'עוד אין ספרים משלכם. התחילו ספר חדש:',
+      inputs: collections.map((c) => ({
+        type: 'checkbox' as const,
+        label: c.title,
+        value: c.id,
+        checked: r.collections.includes(c.id),
+      })),
+      buttons: [
+        { text: 'ספר חדש', role: 'new' },
+        { text: 'ביטול', role: 'cancel' },
+        ...(collections.length ? [{ text: 'שמירה', role: 'confirm' }] : []),
+      ],
+    });
+    await picker.present();
+    const { role, data } = await picker.onDidDismiss<{ values?: number[] }>();
+    if (role !== 'confirm' && role !== 'new') return;
+    // Ticks count for "new cookbook" too, so nothing chosen is lost on the way.
+    const chosen = new Set(data?.values ?? []);
+    try {
+      await Promise.all(
+        collections
+          .filter((c) => chosen.has(c.id) !== r.collections.includes(c.id))
+          .map((c) => this.api.fileRecipe(c.id, r.id, chosen.has(c.id))),
+      );
+      if (role === 'new') {
+        const title = await askTitle(this.alerts, 'ספר מתכונים חדש');
+        if (title) {
+          const created = await this.api.createCollection(title);
+          await this.api.fileRecipe(created.id, r.id, true);
+          chosen.add(created.id);
+          await this.alert.presentToast(`נוסף ל„${created.title}”`);
+        }
+      }
+    } catch (e) {
+      await this.alert.presentToast(e instanceof ApiError ? e.message : 'השינוי לא נשמר.');
+      await this.load();
+      return;
+    }
+    this.recipe.set({ ...r, collections: [...chosen] });
   }
 
   protected async addToShoppingList(): Promise<void> {

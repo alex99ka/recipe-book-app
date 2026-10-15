@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { ApiErrorBody, Cookbook, Me, RecipeDetail, RecipeSummary } from '../models';
+import { ApiErrorBody, Collection, Cookbook, Me, RecipeDetail, RecipeSummary } from '../models';
 import { AuthService } from './auth.service';
 
 const BOOK_KEY = 'recipes.book';
@@ -42,7 +42,29 @@ export class ApiService {
     return this.get<Cookbook[]>('/cookbooks');
   }
 
-  recipes(filter: { q?: string; cookbook?: string; tag?: string; minStars?: number } = {}): Promise<RecipeSummary[]> {
+  collections(): Promise<Collection[]> {
+    return this.get<Collection[]>('/collections');
+  }
+
+  createCollection(title: string): Promise<Collection> {
+    return this.request('POST', '/collections', { title });
+  }
+
+  renameCollection(id: number, title: string): Promise<{ id: number; title: string }> {
+    return this.request('PATCH', `/collections/${id}`, { title });
+  }
+
+  /** The cookbook only; its recipes stay in the book. */
+  deleteCollection(id: number): Promise<void> {
+    return this.request('DELETE', `/collections/${id}`);
+  }
+
+  /** Puts the recipe in the cookbook (in = true) or takes it out. */
+  fileRecipe(collectionId: number, recipeId: string, inIt: boolean): Promise<void> {
+    return this.request(inIt ? 'PUT' : 'DELETE', `/collections/${collectionId}/recipes/${encodeURIComponent(recipeId)}`);
+  }
+
+  recipes(filter: { q?: string; cookbook?: string; collection?: number; tag?: string; minStars?: number } = {}): Promise<RecipeSummary[]> {
     const params = new URLSearchParams();
     for (const [k, v] of Object.entries(filter)) {
       if (v !== undefined && v !== '') {

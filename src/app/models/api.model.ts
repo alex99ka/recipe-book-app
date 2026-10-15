@@ -27,6 +27,15 @@ export interface Cookbook {
   count: number;
 }
 
+/** A cookbook made in the app; the whole household shares it. */
+export interface Collection {
+  id: number;
+  title: string;
+  count: number;
+  /** The newest recipe's photo, signed; null when empty or without photos. */
+  cover: string | null;
+}
+
 export interface RecipeSummary {
   id: string;
   /** Hebrew title once translated, otherwise the original name. */
@@ -71,6 +80,8 @@ export interface RecipeDetail extends RecipeSummary {
   translating: boolean;
   copiedFrom: string | null;
   book: string;
+  /** Ids of the book's own cookbooks this recipe is in. */
+  collections: number[];
 }
 
 /** The error body every non-2xx response carries. */

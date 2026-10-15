@@ -20,6 +20,9 @@ The first version for the phone and the web (1.0.0 was a test build only).
 - Settings: choose the household book, monthly import count, version and updates.
 - Its own icon: an open cookbook with steam rising, on terracotta.
 - Recipes from TikTok get a "לסרטון בטיקטוק" button that opens the video.
+- My cookbooks: make your own, shared with the household. A recipe can be in
+  several; add it from the recipe screen ("הוספה לספר"). Rename and delete
+  from the cookbook screen.
 
 ### Fixed
 - "Check for updates" no longer blames the internet connection when there is
