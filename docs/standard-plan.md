@@ -1,7 +1,7 @@
 # Bringing ספר מתכונים up to the house standard
 
 Audit of 2026-10-15 against the `make-an-app` standard (Defaults + core checklist), and the
-phased plan to reach it. Status: **waiting for approval** (approve by phase number).
+phased plan to reach it. Status: **approved 2026-10-15, phases in order.** Phase 0: built and dry-run tested; waiting on Alex's Drive setup (TASKS.md).
 
 ## Where the app is today (4.0.0)
 
@@ -73,7 +73,11 @@ Ionic app offers it as an APK and installs it from inside the app.
 
 Each phase ships on its own as one release (or, for phase 0, with no app release).
 
-### Phase 0: safety first (no app release)
+### Phase 0: safety first (no app release) — in progress
+- [x] `cld/deploy/backup/backup.py` written; dry run on the Pi restored 195 recipes
+- [x] CLAUDE.md, TASKS.md, COMMANDS.md, README Cost + Security
+- [ ] Drive OAuth + `.env` + cron (Alex), then a real backup + `--verify`
+- [ ] keystore on Drive, Uptime Kuma monitors (Alex)
 - **Daily backup to Google Drive** from the Pi: `pg_dump` of the recipe DB + Mealie's
   `mealie.db` and images, dated, 30 kept, encrypted. Alert on failure. **Restore tested once.**
 - Confirm the shared signing keystore (`todoshop`) is backed up off the PC (Drive).
