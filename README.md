@@ -43,6 +43,29 @@ Repository settings it needs: the `ANDROID_KEYSTORE_BASE64`,
 `ANDROID_KEYSTORE_PASSWORD` and `FIREBASE_SERVICE_ACCOUNT` secrets and the
 `ANDROID_KEY_ALIAS` variable.
 
+## Cost
+
+Everything runs on free tiers; the only metered thing is the Claude API.
+
+| Thing | Limit that matters | What uses it |
+|---|---|---|
+| Firebase Spark (shared with the to-do app) | Firestore 50k reads/day | Household lookups (cached a minute per user, and kept in Postgres if the quota runs out) and the to-do app + its notifier (polls every 2 min) |
+| Firebase Hosting | 10 GB/month | The web app |
+| Claude API | Paid per call | Translating new recipes, grocery lists. Capped per book per month; copies sent to friends reuse the Hebrew |
+| GitHub Actions | Free for public repos | CI and releases |
+| Raspberry Pi 5 | Home power | Recipe server, Mealie, Postgres, nightly backup |
+
+## Security
+
+- The API checks a Firebase ID token on every request; a recipe outside your books is a
+  404. Only household members and invited friends get in. Rate limits on every route.
+- Tailscale Funnel forwards only `/api/v1`; the server also refuses anything else that
+  arrived through a proxy. Image URLs are signed (an `<img>` can't send a token).
+- `google-services.json` and the Firebase web config are public by design. CI runs
+  gitleaks, and every release is scanned for secrets before publishing.
+- Nightly encrypted backup of Postgres and Mealie to Google Drive (`cld/deploy/backup`).
+- Known accepted limit: the TRMNL panel's own routes are LAN-only and have no login.
+
 ## Licence
 
 MIT, see [LICENSE.md](LICENSE.md).
