@@ -1,7 +1,7 @@
 # Bringing ספר מתכונים up to the house standard
 
 Audit of 2026-10-15 against the `make-an-app` standard (Defaults + core checklist), and the
-phased plan to reach it. Status: **approved 2026-10-15, phases in order.** Phase 0: built and dry-run tested; waiting on Alex's Drive setup (TASKS.md).
+phased plan to reach it. Status: **approved 2026-10-15, phases in order.** Phase 0 done; phase 1a built in `alex99ka/recipe-book` (local), waiting on the repo and secrets (TASKS.md).
 
 ## Where the app is today (4.0.0)
 
@@ -73,12 +73,13 @@ Ionic app offers it as an APK and installs it from inside the app.
 
 Each phase ships on its own as one release (or, for phase 0, with no app release).
 
-### Phase 0: safety first (no app release) — in progress
+### Phase 0: safety first (no app release) — done 2026-10-15
 - [x] `cld/deploy/backup/backup.py` written; dry run on the Pi restored 195 recipes
 - [x] CLAUDE.md, TASKS.md, COMMANDS.md, README Cost + Security
 - [x] Drive OAuth + `.env`; first backup to Drive and **restore tested** (195 recipes, 585 photos)
-- [ ] nightly cron line (Alex)
-- [ ] keystore on Drive, Uptime Kuma monitors (Alex)
+- [x] nightly cron line, 03:30 (Alex)
+- [ ] keystore copy on Drive (Alex, to confirm)
+- Uptime Kuma: skipped for now (Alex, 15.10); backup failures still go to Telegram
 - **Daily backup to Google Drive** from the Pi: `pg_dump` of the recipe DB + Mealie's
   `mealie.db` and images, dated, 30 kept, encrypted. Alert on failure. **Restore tested once.**
 - Confirm the shared signing keystore (`todoshop`) is backed up off the PC (Drive).
@@ -87,7 +88,13 @@ Each phase ships on its own as one release (or, for phase 0, with no app release
 - *You notice:* nothing. *Risk:* none to data. *Verified:* a restore into a throwaway
   Postgres/Mealie shows the same recipe count.
 
-### Phase 1a: Flutter app, reading parity, prerelease to Alex only (5.0.0)
+### Phase 1a: Flutter app, reading parity, prerelease to Alex only (5.0.0) — built, not released
+- [x] `C:\claude projectsecipe-book` from app-shell, id `com.alex99ka.recipes`, versionCode 5000000
+- [x] screens below; analyze clean, 29 app tests; server 55 tests (4 new)
+- [x] min version and early users from the **server** (`/app-config`, `/me.early`), not
+  Firestore: the project is the to-do app's, so no rules change there is needed
+- [x] problem report → server `/report` → Telegram; CORS for the `next` channel
+- [ ] GitHub repo + secrets, server deploy, tag 5.0.0, install on Alex's phone, then 5.0.1
 - New repo from `app-shell`, same id and key. Core wired as the starter has it: versioning,
   silent background updates (PackageInstaller), release pipeline (APK + Windows installer +
   web), patient-zero prereleases, min-version gate (`config/recipes` in Firestore), letter
