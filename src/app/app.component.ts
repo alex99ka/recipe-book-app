@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { App } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
@@ -53,6 +54,7 @@ export class AppComponent {
   constructor() {
     addIcons({ book, settings, logOut, mail, people });
     void this.prepareNativeChrome();
+    void this.openAppLinks();
     inject(UpdateService).start();
   }
 
@@ -71,6 +73,21 @@ export class AppComponent {
   private async signOut(): Promise<void> {
     await this.auth.signOut();
     await this.router.navigate(['/auth']);
+  }
+
+  /** An invite link tapped in WhatsApp opens the app (an Android App Link) on that screen. */
+  private async openAppLinks(): Promise<void> {
+    if (!Capacitor.isNativePlatform()) {
+      return;
+    }
+    const open = (url: string | undefined) => {
+      const link = url ? new URL(url) : null;
+      if (link?.host === 'alex-recipe-book.web.app' && link.pathname.startsWith('/invite/')) {
+        void this.router.navigateByUrl(link.pathname);
+      }
+    };
+    await App.addListener('appUrlOpen', (event) => open(event.url));
+    open((await App.getLaunchUrl())?.url); // the link that started the app
   }
 
   private async prepareNativeChrome(): Promise<void> {

@@ -1,6 +1,6 @@
 {
   "name": "recipe-book-app",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "author": "alex99ka (app shell from todo-shopping, itself forked from Hamza Hamidi's todo-list)",
   "homepage": "https://alex-recipe-book.web.app",
   "description": "ספר מתכונים: the recipe book for Android and the web, on the recipe server's /api/v1",
@@ -29,6 +29,7 @@
     "@angular/service-worker": "^22.1.7",
     "@capacitor-firebase/authentication": "8.5.2",
     "@capacitor/android": "8.5.2",
+    "@capacitor/app": "8.1.1",
     "@capacitor/camera": "8.2.4",
     "@capacitor/core": "8.5.2",
     "@capacitor/splash-screen": "8.0.2",

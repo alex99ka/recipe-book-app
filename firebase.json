@@ -3,8 +3,7 @@
     "site": "alex-recipe-book",
     "public": "www",
     "ignore": [
-      "firebase.json",
-      "**/.*"
+      "firebase.json"
     ],
     "rewrites": [
       {

@@ -264,6 +264,9 @@ jobs:
           fi
           rm -rf www
           unzip -q "$RUNNER_TEMP/web/www.zip" -d www
+          # Android's App Link check; kept out of www.zip, which the updater wants without hidden files.
+          cp -r src/.well-known www/
+          test -f www/.well-known/assetlinks.json
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-sa.json"
           trap 'rm -f "$GOOGLE_APPLICATION_CREDENTIALS"' EXIT
           (umask 077 && printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$GOOGLE_APPLICATION_CREDENTIALS")

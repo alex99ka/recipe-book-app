@@ -49,3 +49,11 @@ meta='<meta-data android:name="com.google.firebase.messaging.default_notificatio
 sed -i.orig "s|</application>|${meta}</application>|" "$manifest"
 rm "$manifest.orig"
 grep -q 'default_notification_icon' "$manifest"
+
+# Invite links open the app when it's installed. Android checks
+# https://alex-recipe-book.web.app/.well-known/assetlinks.json (src/.well-known)
+# against the signing key at install time.
+link='<intent-filter android:autoVerify="true"><action android:name="android.intent.action.VIEW" /><category android:name="android.intent.category.DEFAULT" /><category android:name="android.intent.category.BROWSABLE" /><data android:scheme="https" android:host="alex-recipe-book.web.app" android:pathPrefix="/invite/" /></intent-filter>'
+sed -i.orig "0,\|</intent-filter>|s|</intent-filter>|</intent-filter>${link}|" "$manifest"
+rm "$manifest.orig"
+grep -q 'android:host="alex-recipe-book.web.app"' "$manifest"

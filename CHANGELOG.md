@@ -5,6 +5,15 @@ All notable changes to this app. The format follows
 [SemVer](https://semver.org/): a MAJOR version means native changes, so it needs
 the new APK; anything else arrives as an in-app update.
 
+## [2.0.0] - 2026-10-15
+
+Needs the new APK (Settings offers the download): Android now hands invite
+links to the app.
+
+### Changed
+- An invite link opens straight in the app when it's installed, instead of
+  in the browser. Without the app it still opens the web version.
+
 ## [1.2.0] - 2026-10-15
 
 ### Added
