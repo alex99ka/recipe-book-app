@@ -57,3 +57,9 @@ link='<intent-filter android:autoVerify="true"><action android:name="android.int
 sed -i.orig "0,\|</intent-filter>|s|</intent-filter>|</intent-filter>${link}|" "$manifest"
 rm "$manifest.orig"
 grep -q 'android:host="alex-recipe-book.web.app"' "$manifest"
+
+# The menu opens the to-do app by package name; since Android 11 an app may
+# only see the packages it declares here.
+sed -i.orig 's|<application|<queries><package android:name="com.alex99ka.todoshop" /></queries><application|' "$manifest"
+rm "$manifest.orig"
+grep -q 'com.alex99ka.todoshop' "$manifest"

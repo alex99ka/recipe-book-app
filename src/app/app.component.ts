@@ -18,9 +18,9 @@ import {
   IonRouterOutlet,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { book, logOut, mail, people, settings } from 'ionicons/icons';
+import { book, checkboxOutline, logOut, mail, openOutline, people, settings } from 'ionicons/icons';
 import { ApiService, AuthService, UpdateService } from './core';
-import { AlertService } from './shared';
+import { AlertService, openApp } from './shared';
 import { CustomAlert } from './models';
 
 @Component({
@@ -52,10 +52,15 @@ export class AppComponent {
   protected readonly inboxCount = inject(ApiService).inboxCount;
 
   constructor() {
-    addIcons({ book, settings, logOut, mail, people });
+    addIcons({ book, settings, logOut, mail, people, checkboxOutline, openOutline });
     void this.prepareNativeChrome();
     void this.openAppLinks();
     inject(UpdateService).start();
+  }
+
+  /** The to-do and shopping app: same Google account, same households. */
+  protected openTodo(): void {
+    void openApp('com.alex99ka.todoshop', 'https://alex-todo-shopping.web.app');
   }
 
   protected confirmSignOut(): void {

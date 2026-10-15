@@ -5,6 +5,14 @@ All notable changes to this app. The format follows
 [SemVer](https://semver.org/): a MAJOR version means native changes, so it needs
 the new APK; anything else arrives as an in-app update.
 
+## [3.0.0] - 2026-10-15
+
+Needs the new APK (Settings offers the download).
+
+### Added
+- "משימות וקניות" in the menu opens the to-do and shopping app, or its web
+  version when it isn't installed.
+
 ## [2.1.0] - 2026-10-15
 
 ### Added

@@ -6,3 +6,4 @@ export * from './recipe-list.component';
 export * from './scaling';
 export * from './send.service';
 export * from './recipe-comments.component';
+export * from './open-app';
