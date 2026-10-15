@@ -1,0 +1,13 @@
+# gitleaks flags every Google API key. These two are the Firebase keys for the
+# web build and the Android app: public by design (they ship in every client)
+# and listed exactly, so any other key still fails CI.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "public Firebase API keys"
+regexTarget = "match"
+regexes = [
+  '''AIzaSyANlSA4Gsum9NHYrf6JoQ33OETsGERulG4''',
+  '''AIzaSyCSyYbnHqekB4ld3nmCY0NGxkSDsRe6rYI''',
+]

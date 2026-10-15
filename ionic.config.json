@@ -1,0 +1,7 @@
+{
+  "name": "recipe-book-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
