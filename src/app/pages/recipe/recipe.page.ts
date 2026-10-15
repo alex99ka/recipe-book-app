@@ -142,7 +142,7 @@ import { AlertService, askTitle, pretty, scaleIngredient } from '../../shared';
             <ion-icon slot="start" name="bookmark-outline" aria-hidden="true"></ion-icon>
             הוספה לספר
             @if (r.collections.length) {
-              <ion-note slot="end">&nbsp;· ב־{{ r.collections.length }} ספרים</ion-note>
+              <ion-note slot="end">&nbsp;· {{ r.collections.length === 1 ? 'בספר אחד' : 'ב־' + r.collections.length + ' ספרים' }}</ion-note>
             }
           </ion-button>
           <ion-button data-tour="shopping" expand="block" fill="outline" [disabled]="shopping()" (click)="addToShoppingList()">
