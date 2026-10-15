@@ -16,6 +16,7 @@
     "build": "ng build && node scripts/stamp-sw.mjs",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
+    "test": "node --test \"test/unit/**/*.test.ts\"",
     "sync": "cap sync"
   },
   "dependencies": {

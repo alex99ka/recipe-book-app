@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { ApiErrorBody, Cookbook, Me, RecipeSummary } from '../models';
+import { ApiErrorBody, Cookbook, Me, RecipeDetail, RecipeSummary } from '../models';
 import { AuthService } from './auth.service';
 
 const BOOK_KEY = 'recipes.book';
@@ -51,6 +51,20 @@ export class ApiService {
     }
     const query = params.toString();
     return this.get<RecipeSummary[]>(`/recipes${query ? `?${query}` : ''}`);
+  }
+
+  recipe(id: string): Promise<RecipeDetail> {
+    return this.get<RecipeDetail>(`/recipes/${encodeURIComponent(id)}`);
+  }
+
+  /** 0.5 to 5 in half steps, or null to clear. */
+  setRating(id: string, stars: number | null): Promise<{ rating: number | null }> {
+    return this.request('PUT', `/recipes/${encodeURIComponent(id)}/rating`, { stars });
+  }
+
+  /** A link to the to-do app's import screen with these groceries. Send the lines as shown, so doubled amounts stay doubled. */
+  shoppingList(id: string, lines: string[]): Promise<{ url: string }> {
+    return this.request('POST', `/recipes/${encodeURIComponent(id)}/shopping-list`, { lines });
   }
 
   /** Image and cover paths are signed by the server and need no token, so they go straight into <img>. */

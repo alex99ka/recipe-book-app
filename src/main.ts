@@ -4,6 +4,7 @@ import {
   PreloadAllModules,
   provideRouter,
   RouteReuseStrategy,
+  withComponentInputBinding,
   withPreloading,
   withRouterConfig,
 } from '@angular/router';
@@ -23,6 +24,7 @@ bootstrapApplication(AppComponent, {
     provideRouter(
       routes,
       withPreloading(PreloadAllModules),
+      withComponentInputBinding(),
       withRouterConfig({ onSameUrlNavigation: 'reload' }),
     ),
     provideFirebase(),

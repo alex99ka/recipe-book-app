@@ -43,6 +43,36 @@ export interface RecipeSummary {
   createdAt: string | null;
 }
 
+/** An ingredient line with its saved price; `was` is the old text when the line changed since. */
+export interface PriceLine {
+  line: string;
+  price: number | null;
+  was: string | null;
+}
+
+/** The recipe's cost as written; null until something is priced. */
+export interface Cost {
+  total: number;
+  servings: number | null;
+  per_serving: number | null;
+  missing: number;
+  stale: number;
+}
+
+export interface RecipeDetail extends RecipeSummary {
+  ingredients: string[];
+  steps: string[];
+  servings: string;
+  totalTime: string;
+  sourceUrl: string;
+  prices: PriceLine[];
+  cost: Cost | null;
+  /** The Hebrew translation is being made right now; reopen to see it. */
+  translating: boolean;
+  copiedFrom: string | null;
+  book: string;
+}
+
 /** The error body every non-2xx response carries. */
 export interface ApiErrorBody {
   error: string;

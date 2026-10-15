@@ -14,6 +14,16 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
   },
   {
+    path: 'cookbook/:slug',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/cookbook/cookbook.page').then((m) => m.CookbookPage),
+  },
+  {
+    path: 'recipe/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/recipe/recipe.page').then((m) => m.RecipePage),
+  },
+  {
     path: 'settings',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/settings/settings.page').then((m) => m.SettingsPage),

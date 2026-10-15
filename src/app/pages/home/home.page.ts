@@ -1,45 +1,39 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   IonContent,
-  IonItem,
-  IonLabel,
-  IonList,
   IonListHeader,
   IonNote,
   IonRefresher,
   IonRefresherContent,
   IonSearchbar,
   IonSpinner,
-  IonThumbnail,
   type RefresherCustomEvent,
   type SearchbarCustomEvent,
 } from '@ionic/angular';
 import { ApiError, ApiService } from '../../core';
 import { Cookbook, RecipeSummary } from '../../models';
-import { NavBarComponent } from '../../shared';
+import { NavBarComponent, RecipeListComponent } from '../../shared';
 
 @Component({
   selector: 'app-home',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonContent,
-    IonItem,
-    IonLabel,
-    IonList,
     IonListHeader,
     IonNote,
     IonRefresher,
     IonRefresherContent,
     IonSearchbar,
     IonSpinner,
-    IonThumbnail,
     NavBarComponent,
+    RecipeListComponent,
+    RouterLink,
   ],
   styles: `
     .cookbooks { display: flex; gap: 12px; overflow-x: auto; padding: 4px 16px 12px; }
-    .cookbook { flex: 0 0 104px; text-align: center; font-size: 0.85rem; }
+    .cookbook { flex: 0 0 104px; text-align: center; font-size: 0.85rem; color: inherit; text-decoration: none; }
     .cookbook img { width: 104px; height: 140px; object-fit: cover; border-radius: 8px; background: var(--ion-color-light); }
-    ion-thumbnail img { border-radius: 6px; }
     .state { text-align: center; padding: 48px 24px; }
   `,
   template: `
@@ -61,34 +55,16 @@ import { NavBarComponent } from '../../shared';
           <ion-list-header>ספרי בישול</ion-list-header>
           <div class="cookbooks">
             @for (c of cookbooks(); track c.slug) {
-              <div class="cookbook">
+              <a class="cookbook" [routerLink]="['/cookbook', c.slug]" [state]="{ title: c.title }">
                 <img [src]="api.imageUrl(c.cover)" alt="" loading="lazy" />
                 <div>{{ c.title }}</div>
                 <ion-note>{{ c.count }}</ion-note>
-              </div>
+              </a>
             }
           </div>
         }
         <ion-list-header>{{ query() ? 'תוצאות' : 'נוספו לאחרונה' }}</ion-list-header>
-        <ion-list>
-          @for (r of shown(); track r.id) {
-            <ion-item>
-              <ion-thumbnail slot="start">
-                @if (r.image) {
-                  <img [src]="api.imageUrl(r.image)" alt="" loading="lazy" />
-                }
-              </ion-thumbnail>
-              <ion-label>
-                <h2>{{ r.title }}</h2>
-                @if (r.tags.length) {
-                  <p>{{ r.tags.join(' · ') }}</p>
-                }
-              </ion-label>
-            </ion-item>
-          } @empty {
-            <div class="state"><ion-note>{{ query() ? 'לא נמצא מתכון.' : 'הספר עוד ריק.' }}</ion-note></div>
-          }
-        </ion-list>
+        <app-recipe-list [recipes]="shown()" [empty]="query() ? 'לא נמצא מתכון.' : 'הספר עוד ריק.'" />
       }
     </ion-content>
   `,
