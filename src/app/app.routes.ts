@@ -33,5 +33,20 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/settings/settings.page').then((m) => m.SettingsPage),
   },
+  {
+    path: 'friends',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/friends/friends.page').then((m) => m.FriendsPage),
+  },
+  {
+    path: 'inbox',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/inbox/inbox.page').then((m) => m.InboxPage),
+  },
+  {
+    path: 'invite/:token',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/invite/invite.page').then((m) => m.InvitePage),
+  },
   { path: '**', redirectTo: 'home' },
 ];

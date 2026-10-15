@@ -17,6 +17,27 @@ export interface Me {
   createsThisMonth: number;
   /** null for admins: no monthly cap. */
   createsPerMonth: number | null;
+  /** Items friends sent that are waiting in the inbox. */
+  inbox: number;
+}
+
+/** An account you can send copies to; separate from households. */
+export interface Friend {
+  uid: string;
+  name: string;
+}
+
+/** Something a friend sent. The copies are already in your book. */
+export interface InboxItem {
+  id: number;
+  from: string;
+  title: string;
+  count: number;
+  /** Set for a single recipe. */
+  recipeId: string | null;
+  /** Set for a whole cookbook (its copy in your book). */
+  collectionId: number | null;
+  createdAt: string;
 }
 
 export interface Cookbook {

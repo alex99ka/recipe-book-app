@@ -6,6 +6,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import {
   IonApp,
+  IonBadge,
   IonContent,
   IonHeader,
   IonIcon,
@@ -16,8 +17,8 @@ import {
   IonRouterOutlet,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { book, logOut, settings } from 'ionicons/icons';
-import { AuthService, UpdateService } from './core';
+import { book, logOut, mail, people, settings } from 'ionicons/icons';
+import { ApiService, AuthService, UpdateService } from './core';
 import { AlertService } from './shared';
 import { CustomAlert } from './models';
 
@@ -28,6 +29,7 @@ import { CustomAlert } from './models';
   styleUrl: './app.component.scss',
   imports: [
     IonApp,
+    IonBadge,
     IonMenu,
     IonHeader,
     IonContent,
@@ -46,9 +48,10 @@ export class AppComponent {
   private readonly router = inject(Router);
 
   protected readonly user = toSignal(this.auth.user$, { initialValue: null });
+  protected readonly inboxCount = inject(ApiService).inboxCount;
 
   constructor() {
-    addIcons({ book, settings, logOut });
+    addIcons({ book, settings, logOut, mail, people });
     void this.prepareNativeChrome();
     inject(UpdateService).start();
   }

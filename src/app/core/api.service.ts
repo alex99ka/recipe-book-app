@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { ApiErrorBody, Collection, Cookbook, Me, RecipeDetail, RecipeSummary } from '../models';
+import { ApiErrorBody, Collection, Cookbook, Friend, InboxItem, Me, RecipeDetail, RecipeSummary } from '../models';
 import { AuthService } from './auth.service';
 
 const BOOK_KEY = 'recipes.book';
@@ -28,6 +28,9 @@ export class ApiService {
 
   /** The chosen book; empty means the server's default (the first one). */
   readonly book = signal(localStorage.getItem(BOOK_KEY) ?? '');
+
+  /** Waiting inbox items, for the menu badge and the home banner. */
+  readonly inboxCount = signal(0);
 
   setBook(key: string): void {
     localStorage.setItem(BOOK_KEY, key);
@@ -87,6 +90,41 @@ export class ApiService {
   /** A link to the to-do app's import screen with these groceries. Send the lines as shown, so doubled amounts stay doubled. */
   shoppingList(id: string, lines: string[]): Promise<{ url: string }> {
     return this.request('POST', `/recipes/${encodeURIComponent(id)}/shopping-list`, { lines });
+  }
+
+  friends(): Promise<Friend[]> {
+    return this.get<Friend[]>('/friends');
+  }
+
+  /** A single-use link, valid for a week. */
+  createInvite(): Promise<{ url: string; expiresAt: string }> {
+    return this.request('POST', '/friends/invites');
+  }
+
+  /** Works before this account is let in: accepting is what lets it in. */
+  acceptInvite(token: string): Promise<Friend> {
+    return this.request('POST', `/friends/invites/${encodeURIComponent(token)}/accept`);
+  }
+
+  removeFriend(uid: string): Promise<void> {
+    return this.request('DELETE', `/friends/${encodeURIComponent(uid)}`);
+  }
+
+  /** Sends a copy of a recipe, or of a whole cookbook, into the friend's book. */
+  send(what: { recipe: string } | { collection: number }, to: string): Promise<{ sent: number }> {
+    const path = 'recipe' in what
+      ? `/recipes/${encodeURIComponent(what.recipe)}/send`
+      : `/collections/${what.collection}/send`;
+    return this.request('POST', path, { to });
+  }
+
+  inbox(): Promise<InboxItem[]> {
+    return this.get<InboxItem[]>('/inbox');
+  }
+
+  /** keep leaves the copies; discard deletes them. */
+  settle(id: number, how: 'keep' | 'discard'): Promise<void> {
+    return this.request('POST', `/inbox/${id}/${how}`);
   }
 
   /** Image and cover paths are signed by the server and need no token, so they go straight into <img>. */

@@ -21,10 +21,10 @@ import {
   type SegmentCustomEvent,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { bookmarkOutline, cartOutline, linkOutline, logoTiktok, star, starHalf, starOutline } from 'ionicons/icons';
+import { bookmarkOutline, cartOutline, linkOutline, logoTiktok, paperPlaneOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { ApiError, ApiService } from '../../core';
 import { Collection, RecipeDetail } from '../../models';
-import { AlertService, askTitle, pretty, scaleIngredient } from '../../shared';
+import { AlertService, SendService, askTitle, pretty, scaleIngredient } from '../../shared';
 
 @Component({
   selector: 'app-recipe',
@@ -145,6 +145,10 @@ import { AlertService, askTitle, pretty, scaleIngredient } from '../../shared';
               <ion-note slot="end">&nbsp;· {{ r.collections.length === 1 ? 'בספר אחד' : 'ב־' + r.collections.length + ' ספרים' }}</ion-note>
             }
           </ion-button>
+          <ion-button data-tour="send" expand="block" fill="outline" (click)="sender.send({ recipe: r.id }, r.title)">
+            <ion-icon slot="start" name="paper-plane-outline" aria-hidden="true"></ion-icon>
+            שליחה לחבר
+          </ion-button>
           <ion-button data-tour="shopping" expand="block" fill="outline" [disabled]="shopping()" (click)="addToShoppingList()">
             @if (shopping()) {
               <ion-spinner slot="start" name="crescent"></ion-spinner>
@@ -186,6 +190,7 @@ export class RecipePage implements OnInit {
   protected readonly api = inject(ApiService);
   private readonly alert = inject(AlertService);
   private readonly alerts = inject(AlertController);
+  protected readonly sender = inject(SendService);
   /** Route param, bound by withComponentInputBinding. */
   readonly id = input.required<string>();
 
@@ -201,7 +206,7 @@ export class RecipePage implements OnInit {
   );
 
   constructor() {
-    addIcons({ bookmarkOutline, cartOutline, linkOutline, logoTiktok, star, starHalf, starOutline });
+    addIcons({ bookmarkOutline, cartOutline, linkOutline, logoTiktok, paperPlaneOutline, star, starHalf, starOutline });
   }
 
   ngOnInit(): void {

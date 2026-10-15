@@ -4,6 +4,8 @@ import {
   AlertController,
   IonContent,
   IonIcon,
+  IonItem,
+  IonLabel,
   IonListHeader,
   IonNote,
   IonRefresher,
@@ -14,7 +16,7 @@ import {
   type SearchbarCustomEvent,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { add, bookOutline } from 'ionicons/icons';
+import { add, bookOutline, mailUnreadOutline } from 'ionicons/icons';
 import { ApiError, ApiService, TourService } from '../../core';
 import { Collection, Cookbook, RecipeSummary } from '../../models';
 import { AlertService, NavBarComponent, RecipeListComponent, askTitle } from '../../shared';
@@ -25,6 +27,8 @@ import { AlertService, NavBarComponent, RecipeListComponent, askTitle } from '..
   imports: [
     IonContent,
     IonIcon,
+    IonItem,
+    IonLabel,
     IonListHeader,
     IonNote,
     IonRefresher,
@@ -59,6 +63,12 @@ import { AlertService, NavBarComponent, RecipeListComponent, askTitle } from '..
       } @else if (recipes() === null) {
         <div class="state"><ion-spinner name="crescent"></ion-spinner></div>
       } @else {
+        @if (!query() && api.inboxCount()) {
+          <ion-item routerLink="/inbox" color="light" lines="none" detail>
+            <ion-icon slot="start" name="mail-unread-outline" aria-hidden="true"></ion-icon>
+            <ion-label>{{ api.inboxCount() === 1 ? 'משהו חדש מחבר' : api.inboxCount() + ' דברים חדשים מחברים' }}</ion-label>
+          </ion-item>
+        }
         @if (!query()) {
           <ion-list-header>הספרים שלי</ion-list-header>
           <div class="cookbooks" data-tour="my-books">
@@ -117,7 +127,7 @@ export class HomePage {
   });
 
   constructor() {
-    addIcons({ add, bookOutline });
+    addIcons({ add, bookOutline, mailUnreadOutline });
     const tour = inject(TourService);
     // The first time the book opens on this device, show it around.
     void this.load().then(() => this.error() || tour.startOnce());
@@ -127,7 +137,13 @@ export class HomePage {
   ionViewWillEnter(): void {
     if (this.recipes()) {
       void this.api.collections().then((c) => this.collections.set(c), () => undefined);
+      this.countInbox();
     }
+  }
+
+  /** Off the critical path: the banner can show up a moment later. */
+  private countInbox(): void {
+    void this.api.me().then((me) => this.api.inboxCount.set(me.inbox), () => undefined);
   }
 
   protected async newCollection(): Promise<void> {
@@ -167,6 +183,7 @@ export class HomePage {
       this.recipes.set(recipes);
       this.cookbooks.set(cookbooks);
       this.collections.set(collections);
+      if (!q) this.countInbox();
     } catch (e) {
       this.error.set(e instanceof ApiError ? e.message : 'משהו השתבש.');
     }

@@ -30,6 +30,21 @@
           </ion-item>
         </ion-menu-toggle>
         <ion-menu-toggle>
+          <ion-item button lines="none" routerLink="/inbox" routerLinkActive="selected" #inboxLink="routerLinkActive">
+            <ion-icon slot="start" name="mail" aria-hidden="true" [color]="inboxLink.isActive ? 'primary' : 'medium'"></ion-icon>
+            <ion-label [color]="inboxLink.isActive ? 'primary' : ''">התקבל מחברים</ion-label>
+            @if (inboxCount()) {
+              <ion-badge slot="end">{{ inboxCount() }}</ion-badge>
+            }
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item button lines="none" routerLink="/friends" routerLinkActive="selected" #friendsLink="routerLinkActive">
+            <ion-icon slot="start" name="people" aria-hidden="true" [color]="friendsLink.isActive ? 'primary' : 'medium'"></ion-icon>
+            <ion-label [color]="friendsLink.isActive ? 'primary' : ''">חברים</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
           <ion-item
             button
             lines="none"

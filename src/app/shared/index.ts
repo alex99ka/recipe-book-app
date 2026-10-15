@@ -4,3 +4,4 @@ export * from './media.service';
 export * from './nav-bar.component';
 export * from './recipe-list.component';
 export * from './scaling';
+export * from './send.service';

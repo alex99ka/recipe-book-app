@@ -14,10 +14,10 @@ import {
   IonToolbar,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { createOutline, trashOutline } from 'ionicons/icons';
+import { createOutline, paperPlaneOutline, trashOutline } from 'ionicons/icons';
 import { ApiError, ApiService } from '../../core';
 import { RecipeSummary } from '../../models';
-import { AlertService, RecipeListComponent, askTitle } from '../../shared';
+import { AlertService, RecipeListComponent, SendService, askTitle } from '../../shared';
 
 /** A scanned cookbook (/cookbook/:slug) or one of the book's own (/collection/:id). */
 @Component({
@@ -35,6 +35,7 @@ import { AlertService, RecipeListComponent, askTitle } from '../../shared';
         <ion-title>{{ title() }}</ion-title>
         @if (id()) {
           <ion-buttons slot="end">
+            <ion-button aria-label="שליחה לחבר" (click)="share()"><ion-icon slot="icon-only" name="paper-plane-outline"></ion-icon></ion-button>
             <ion-button aria-label="שינוי שם" (click)="rename()"><ion-icon slot="icon-only" name="create-outline"></ion-icon></ion-button>
             <ion-button aria-label="מחיקת הספר" (click)="remove()"><ion-icon slot="icon-only" name="trash-outline"></ion-icon></ion-button>
           </ion-buttons>
@@ -57,6 +58,7 @@ export class CookbookPage implements OnInit {
   private readonly alerts = inject(AlertController);
   private readonly alert = inject(AlertService);
   private readonly router = inject(Router);
+  private readonly sender = inject(SendService);
   /** Route params, bound by withComponentInputBinding: one or the other. */
   readonly slug = input<string>();
   readonly id = input<string>();
@@ -66,11 +68,15 @@ export class CookbookPage implements OnInit {
   protected readonly error = signal('');
 
   constructor() {
-    addIcons({ createOutline, trashOutline });
+    addIcons({ createOutline, paperPlaneOutline, trashOutline });
   }
 
   ngOnInit(): void {
     void this.load();
+  }
+
+  protected share(): void {
+    void this.sender.send({ collection: Number(this.id()) }, this.title());
   }
 
   protected async rename(): Promise<void> {
