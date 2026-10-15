@@ -23,6 +23,10 @@ The first version for the phone and the web (1.0.0 was a test build only).
 - My cookbooks: make your own, shared with the household. A recipe can be in
   several; add it from the recipe screen ("הוספה לספר"). Rename and delete
   from the cookbook screen.
+- Friends, separate from households: invite one with a link (WhatsApp or
+  copy), then send them a recipe or a whole cookbook. They get their own copy,
+  Hebrew and photo included. What friends send waits under "התקבל מחברים"
+  to be kept or discarded.
 
 ### Fixed
 - "Check for updates" no longer blames the internet connection when there is
