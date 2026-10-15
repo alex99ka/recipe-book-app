@@ -21,8 +21,8 @@ import {
   type RadioGroupCustomEvent,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { download, logoGithub, refresh, sparkles } from 'ionicons/icons';
-import { ApiService, AuthService, UpdateService } from '../../core';
+import { download, logoGithub, mapOutline, refresh, sparkles } from 'ionicons/icons';
+import { ApiService, AuthService, TourService, UpdateService } from '../../core';
 import { environment } from '../../../environments/environment';
 import { Me } from '../../models';
 import { AlertService } from '../../shared';
@@ -136,6 +136,10 @@ import { AlertService } from '../../shared';
             <ion-label>להורדת אפליקציית האנדרואיד</ion-label>
           </ion-item>
         }
+        <ion-item button data-tour="tour" (click)="tour.start()">
+          <ion-icon slot="start" name="map-outline" color="primary" aria-hidden="true"></ion-icon>
+          <ion-label>סיור מודרך באפליקציה</ion-label>
+        </ion-item>
         <ion-item button [href]="changelogUrl" target="_blank" rel="noopener">
           <ion-icon slot="start" name="logo-github" color="medium" aria-hidden="true"></ion-icon>
           <ion-label>מה חדש</ion-label>
@@ -151,6 +155,7 @@ export class SettingsPage {
   private readonly alert = inject(AlertService);
   private readonly api = inject(ApiService);
   protected readonly updates = inject(UpdateService);
+  protected readonly tour = inject(TourService);
   protected readonly me = signal<Me | null>(null);
   protected readonly user = toSignal(inject(AuthService).user$, { initialValue: null });
   protected readonly native = Capacitor.isNativePlatform();
@@ -180,7 +185,7 @@ export class SettingsPage {
   });
 
   constructor() {
-    addIcons({ download, logoGithub, refresh, sparkles });
+    addIcons({ download, logoGithub, mapOutline, refresh, sparkles });
     this.api.me().then(
       (me) => this.me.set(me),
       (e: Error) => void this.alert.presentToast(e.message),

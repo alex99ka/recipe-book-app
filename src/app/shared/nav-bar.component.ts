@@ -19,7 +19,7 @@ import { grid, list, search } from 'ionicons/icons';
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-menu-button></ion-menu-button>
+          <ion-menu-button data-tour="menu"></ion-menu-button>
         </ion-buttons>
         <ion-title>{{ title() }}</ion-title>
         <ion-buttons slot="end">
@@ -28,7 +28,7 @@ import { grid, list, search } from 'ionicons/icons';
               <ion-icon slot="icon-only" [name]="cardOrList() ? 'list' : 'grid'"></ion-icon>
             </ion-button>
           }
-          <ion-button aria-label="חיפוש" (click)="clickSearch.emit()">
+          <ion-button aria-label="חיפוש" data-tour="search" (click)="clickSearch.emit()">
             <ion-icon slot="icon-only" name="search"></ion-icon>
           </ion-button>
         </ion-buttons>

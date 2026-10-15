@@ -109,3 +109,15 @@ ion-modal.merge-sheet {
     contain: content;
   }
 }
+
+// Guided tour (driver.js): Hebrew reads right to left, in the app's font.
+.driver-popover.app-tour {
+  direction: rtl;
+  text-align: right;
+  font-family: inherit;
+  max-width: 300px;
+}
+.driver-popover.app-tour .driver-popover-close-btn {
+  right: auto;
+  left: 0;
+}

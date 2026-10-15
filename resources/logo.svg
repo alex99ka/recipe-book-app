@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- ספר מתכונים: an open cookbook with steam rising from it. The source for
+       every icon size; render with scripts/render-icons.py. The book and steam
+       stay inside the central 66% that Android's adaptive icon masks keep. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E0703A"/>
+      <stop offset="1" stop-color="#A63D1B"/>
+    </linearGradient>
+  </defs>
+  <rect id="background" width="1024" height="1024" fill="url(#bg)"/>
+  <g id="glyph" transform="translate(512 540) scale(0.95) translate(-512 -540)">
+    <!-- cover, peeking out under the pages -->
+    <path d="M232 448 L232 742 C340 718 440 724 512 766 C584 724 684 718 792 742 L792 448 C684 428 584 432 512 470 C440 432 340 428 232 448 Z" fill="#6E2410"/>
+    <!-- pages -->
+    <path d="M512 452 C436 412 338 406 256 426 L256 714 C338 694 436 700 512 742 Z" fill="#FFF3E0"/>
+    <path d="M512 452 C588 412 686 406 768 426 L768 714 C686 694 588 700 512 742 Z" fill="#FBE6C8"/>
+    <!-- recipe lines -->
+    <g stroke="#E0703A" stroke-width="14" stroke-linecap="round" opacity="0.55" fill="none">
+      <path d="M306 486 C360 476 410 478 462 494"/>
+      <path d="M306 536 C360 526 410 528 462 544"/>
+      <path d="M306 586 C350 578 388 579 424 590"/>
+      <path d="M562 494 C614 478 664 476 718 486"/>
+      <path d="M562 544 C614 528 664 526 718 536"/>
+      <path d="M600 590 C636 579 674 578 718 586"/>
+    </g>
+    <!-- steam -->
+    <g stroke="#FFF3E0" stroke-width="30" stroke-linecap="round" fill="none">
+      <path d="M432 392 C404 362 460 336 432 302 C406 272 456 248 432 220"/>
+      <path d="M512 380 C484 346 540 318 512 282 C486 250 536 222 512 192"/>
+      <path d="M592 392 C564 362 620 336 592 302 C566 272 616 248 592 220"/>
+    </g>
+  </g>
+</svg>

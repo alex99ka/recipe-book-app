@@ -1,6 +1,6 @@
 {
   "name": "recipe-book-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "alex99ka (app shell from todo-shopping, itself forked from Hamza Hamidi's todo-list)",
   "homepage": "https://alex-recipe-book.web.app",
   "description": "ספר מתכונים: the recipe book for Android and the web, on the recipe server's /api/v1",
@@ -37,6 +37,7 @@
     "@fontsource-variable/rubik": "^5.3.0",
     "@ionic/angular": "9.0.4",
     "@ionic/pwa-elements": "3.4.0",
+    "driver.js": "1.8.0",
     "firebase": "12.19.0",
     "ionicons": "8.1.0",
     "rxfire": "6.2.0",

@@ -35,8 +35,8 @@ cp google-services.json android/app/google-services.json
 
 npx --yes @capacitor/assets@3.0.5 generate --android --androidProject android \
   --assetPath resources \
-  --iconBackgroundColor '#047857' --iconBackgroundColorDark '#047857' \
-  --splashBackgroundColor '#f3faf7' --splashBackgroundColorDark '#0b1512'
+  --iconBackgroundColor '#C25427' --iconBackgroundColorDark '#C25427' \
+  --splashBackgroundColor '#C25427' --splashBackgroundColorDark '#C25427'
 
 # Push notifications need a white-on-transparent status bar icon; without one
 # Android shows the launcher icon as a white square.

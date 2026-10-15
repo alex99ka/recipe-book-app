@@ -81,7 +81,7 @@ import { AlertService, pretty, scaleIngredient } from '../../shared';
         }
         <div class="body">
           <h1>{{ r.title }}</h1>
-          <div class="stars" role="group" aria-label="דירוג">
+          <div class="stars" role="group" aria-label="דירוג" data-tour="stars">
             @for (i of [1, 2, 3, 4, 5]; track i) {
               <ion-button fill="clear" size="small" color="warning" [attr.aria-label]="i + ' כוכבים'" (click)="rate(i)">
                 <ion-icon slot="icon-only" [name]="starIcon(i)"></ion-icon>
@@ -100,7 +100,7 @@ import { AlertService, pretty, scaleIngredient } from '../../shared';
           }
 
           <h3>מצרכים</h3>
-          <ion-segment [value]="factor()" (ionChange)="setFactor($event)">
+          <ion-segment data-tour="scale" [value]="factor()" (ionChange)="setFactor($event)">
             @for (f of [1, 2, 3]; track f) {
               <ion-segment-button [value]="f"><ion-label>×{{ f }}</ion-label></ion-segment-button>
             }
@@ -130,7 +130,7 @@ import { AlertService, pretty, scaleIngredient } from '../../shared';
               </ion-note>
             }
           }
-          <ion-button expand="block" fill="outline" [disabled]="shopping()" (click)="addToShoppingList()">
+          <ion-button data-tour="shopping" expand="block" fill="outline" [disabled]="shopping()" (click)="addToShoppingList()">
             @if (shopping()) {
               <ion-spinner slot="start" name="crescent"></ion-spinner>
             } @else {

@@ -96,7 +96,7 @@ export class UpdateService {
     } catch {
       this.status.set('error');
       if (manual) {
-        await this.toast('לא הצלחנו לבדוק עדכונים. יש חיבור לאינטרנט?');
+        await this.toast(navigator.onLine ? 'לא הצלחנו לבדוק עדכונים כרגע. נסו שוב מאוחר יותר.' : 'אין חיבור לאינטרנט.');
       }
     }
   }
@@ -114,6 +114,11 @@ export class UpdateService {
     const res = await fetch(`https://api.github.com/repos/${environment.githubRepo}/releases/latest`, {
       headers: { Accept: 'application/vnd.github+json' },
     });
+    if (res.status === 404) {
+      // No release published yet: there is nothing newer than this build.
+      this.status.set('up-to-date');
+      return;
+    }
     if (!res.ok) {
       throw new Error(`GitHub ${res.status}`);
     }

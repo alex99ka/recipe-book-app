@@ -11,7 +11,7 @@ import {
   type RefresherCustomEvent,
   type SearchbarCustomEvent,
 } from '@ionic/angular';
-import { ApiError, ApiService } from '../../core';
+import { ApiError, ApiService, TourService } from '../../core';
 import { Cookbook, RecipeSummary } from '../../models';
 import { NavBarComponent, RecipeListComponent } from '../../shared';
 
@@ -53,7 +53,7 @@ import { NavBarComponent, RecipeListComponent } from '../../shared';
       } @else {
         @if (!query() && cookbooks().length) {
           <ion-list-header>ספרי בישול</ion-list-header>
-          <div class="cookbooks">
+          <div class="cookbooks" data-tour="cookbooks">
             @for (c of cookbooks(); track c.slug) {
               <a class="cookbook" [routerLink]="['/cookbook', c.slug]" [state]="{ title: c.title }">
                 <img [src]="api.imageUrl(c.cover)" alt="" loading="lazy" />
@@ -64,7 +64,7 @@ import { NavBarComponent, RecipeListComponent } from '../../shared';
           </div>
         }
         <ion-list-header>{{ query() ? 'תוצאות' : 'נוספו לאחרונה' }}</ion-list-header>
-        <app-recipe-list [recipes]="shown()" [empty]="query() ? 'לא נמצא מתכון.' : 'הספר עוד ריק.'" />
+        <app-recipe-list data-tour="recent" [recipes]="shown()" [empty]="query() ? 'לא נמצא מתכון.' : 'הספר עוד ריק.'" />
       }
     </ion-content>
   `,
@@ -86,7 +86,9 @@ export class HomePage {
   });
 
   constructor() {
-    void this.load();
+    const tour = inject(TourService);
+    // The first time the book opens on this device, show it around.
+    void this.load().then(() => this.error() || tour.startOnce());
   }
 
   protected search(event: SearchbarCustomEvent): void {
