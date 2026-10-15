@@ -89,7 +89,7 @@ Each phase ships on its own as one release (or, for phase 0, with no app release
   Postgres/Mealie shows the same recipe count.
 
 ### Phase 1a: Flutter app, reading parity, prerelease to Alex only (5.0.0) — built, not released
-- [x] `C:\claude projectsecipe-book` from app-shell, id `com.alex99ka.recipes`, versionCode 5000000
+- [x] `C:\claude projects\recipe-book` from app-shell, id `com.alex99ka.recipes`, versionCode 5000000
 - [x] screens below; analyze clean, 29 app tests; server 55 tests (4 new)
 - [x] min version and early users from the **server** (`/app-config`, `/me.early`), not
   Firestore: the project is the to-do app's, so no rules change there is needed

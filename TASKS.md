@@ -2,7 +2,7 @@
 
 ## עליך
 1. לוודא שקובץ ה-keystore (todoshop) גם בדרייב, לא רק במחשב.
-2. שלב 1א: הרשימה ב-`C:\claude projectsecipe-book\TASKS.md`.
+2. שלב 1א: הרשימה ב-`C:\claude projects\recipe-book\TASKS.md`.
 
 ## אצל Claude
 1. שלב 1א: אחרי שהריפו והסודות מוכנים, תג 5.0.0 ובדיקת עדכון עם 5.0.1.
