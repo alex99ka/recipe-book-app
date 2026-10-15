@@ -5,7 +5,19 @@ All notable changes to this app. The format follows
 [SemVer](https://semver.org/): a MAJOR version means native changes, so it needs
 the new APK; anything else arrives as an in-app update.
 
-## [1.1.0] - not released yet
+## [1.2.0] - 2026-10-15
+
+### Added
+- Add a recipe from the app: the + button on Home takes a link (a recipe site
+  or a TikTok, Instagram or YouTube video), pasted text, or a photo or PDF of a
+  recipe, and can put it straight into your own cookbooks.
+- Edit a recipe (the pencil on a recipe): name, photo, tags, categories, source
+  link and ingredient prices, and delete it.
+- Settings → "המסך והיומנים": link the TRMNL screen to the household with the
+  6-digit code it shows (valid 15 minutes), and add, rename or remove the
+  calendars on its idle screen. Everyone in the household can manage them.
+
+## [1.1.0] - 2026-10-15
 
 The first version for the phone and the web (1.0.0 was a test build only).
 
