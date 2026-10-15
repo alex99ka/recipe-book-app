@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import {
-  ApiErrorBody, CalendarFeed, Collection, Cookbook, Cost, Friend, InboxItem, Me, PanelState, PriceLine, RecipeDetail,
+  ApiErrorBody, CalendarFeed, RecipeComment, RecipeComments, Collection, Cookbook, Cost, Friend, InboxItem, Me, PanelState, PriceLine, RecipeDetail,
   RecipePatch, RecipeSummary,
 } from '../models';
 import { AuthService } from './auth.service';
@@ -114,11 +114,24 @@ export class ApiService {
   }
 
   /** Sends a copy of a recipe, or of a whole cookbook, into the friend's book. */
-  send(what: { recipe: string } | { collection: number }, to: string): Promise<{ sent: number }> {
+  send(what: { recipe: string } | { collection: number }, to: string, note = ''): Promise<{ sent: number }> {
     const path = 'recipe' in what
       ? `/recipes/${encodeURIComponent(what.recipe)}/send`
       : `/collections/${what.collection}/send`;
-    return this.request('POST', path, { to });
+    return this.request('POST', path, { to, note });
+  }
+
+  comments(recipeId: string): Promise<RecipeComments> {
+    return this.get<RecipeComments>(`/recipes/${encodeURIComponent(recipeId)}/comments`);
+  }
+
+  /** thread: a copy of this recipe, to answer in the conversation with that friend. */
+  addComment(recipeId: string, body: string, thread?: string): Promise<RecipeComment> {
+    return this.request('POST', `/recipes/${encodeURIComponent(recipeId)}/comments`, { body, thread });
+  }
+
+  deleteComment(id: number): Promise<void> {
+    return this.request('DELETE', `/comments/${id}`);
   }
 
   inbox(): Promise<InboxItem[]> {

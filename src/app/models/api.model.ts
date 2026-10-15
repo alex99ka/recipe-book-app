@@ -39,6 +39,25 @@ export interface CalendarFeed {
   error: string;
 }
 
+export interface RecipeComment {
+  id: number;
+  author: string;
+  body: string;
+  mine: boolean;
+  createdAt: string;
+}
+
+/**
+ * A recipe's comments (its book sees them). On a copy a friend sent, sentBy
+ * names the sender, who sees them too; on an original, each copy sent from it
+ * is a thread: the conversation with that friend.
+ */
+export interface RecipeComments {
+  comments: RecipeComment[];
+  sentBy: string | null;
+  threads: { copyId: string; friend: string; comments: RecipeComment[] }[];
+}
+
 export interface RecipePatch {
   name?: string;
   tags?: string[];
@@ -58,6 +77,8 @@ export interface InboxItem {
   from: string;
   title: string;
   count: number;
+  /** What the friend wrote when sending; "" for none. */
+  note: string;
   /** Set for a single recipe. */
   recipeId: string | null;
   /** Set for a whole cookbook (its copy in your book). */

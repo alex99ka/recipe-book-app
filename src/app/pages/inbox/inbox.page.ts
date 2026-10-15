@@ -30,6 +30,7 @@ import { AlertService } from '../../shared';
   styles: `
     .state { text-align: center; padding: 48px 24px; }
     .actions { display: flex; gap: 8px; padding: 0 16px 12px; }
+    .note { white-space: normal; font-style: italic; }
   `,
   template: `
     <ion-header>
@@ -49,6 +50,7 @@ import { AlertService } from '../../shared';
                 <ion-label>
                   <h2>{{ i.title }}</h2>
                   <p>{{ i.collectionId ? 'ספר עם ' + i.count + ' מתכונים' : 'מתכון' }} · מאת {{ i.from }}</p>
+                  @if (i.note) { <p class="note">„{{ i.note }}”</p> }
                 </ion-label>
               </ion-item>
               <div class="actions">

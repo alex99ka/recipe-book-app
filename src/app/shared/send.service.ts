@@ -43,9 +43,19 @@ export class SendService {
     const to = data?.values;
     if (role !== 'confirm' || !to) return;
     const name = friends.find((f) => f.uid === to)?.name ?? '';
+    const ask = await this.alerts.create({
+      header: `הערה ל${name}`,
+      message: 'לא חובה. כששולחים מתכון, ההערה פותחת שיחה ששניכם רואים בתוך המתכון.',
+      inputs: [{ name: 'note', type: 'textarea', placeholder: 'למשל: נסו עם כבש', attributes: { maxlength: 1000 } }],
+      buttons: [{ text: 'בלי הערה', role: 'skip' }, { text: 'שליחה', role: 'confirm' }],
+    });
+    await ask.present();
+    const answer = await ask.onDidDismiss<{ values: { note: string } }>();
+    if (answer.role !== 'skip' && answer.role !== 'confirm') return;
+    const note = answer.role === 'confirm' ? (answer.data?.values.note ?? '').trim() : '';
     await this.alert.presentToast('שולח…');
     try {
-      await this.api.send(what, to);
+      await this.api.send(what, to, note);
       await this.alert.presentToast(`נשלח ל${name}`);
     } catch (e) {
       await this.alert.presentToast(e instanceof ApiError ? e.message : 'השליחה נכשלה.');

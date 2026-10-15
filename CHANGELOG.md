@@ -5,6 +5,15 @@ All notable changes to this app. The format follows
 [SemVer](https://semver.org/): a MAJOR version means native changes, so it needs
 the new APK; anything else arrives as an in-app update.
 
+## [2.1.0] - 2026-10-15
+
+### Added
+- Comments on a recipe, shared with the household: how it came out, what to
+  change next time.
+- A note when sending to a friend. For a recipe it opens a conversation that
+  you both see inside the recipe ("שיחה עם …" on yours); for a cookbook it
+  shows in their inbox.
+
 ## [2.0.0] - 2026-10-15
 
 Needs the new APK (Settings offers the download): Android now hands invite

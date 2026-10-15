@@ -25,13 +25,14 @@ import { addIcons } from 'ionicons';
 import { bookmarkOutline, cartOutline, createOutline, linkOutline, logoTiktok, paperPlaneOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { ApiError, ApiService } from '../../core';
 import { Collection, RecipeDetail } from '../../models';
-import { AlertService, SendService, askTitle, pretty, scaleIngredient } from '../../shared';
+import { AlertService, RecipeCommentsComponent, SendService, askTitle, pretty, scaleIngredient } from '../../shared';
 
 @Component({
   selector: 'app-recipe',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
+    RecipeCommentsComponent,
     IonBackButton,
     IonButton,
     IonButtons,
@@ -187,6 +188,7 @@ import { AlertService, SendService, askTitle, pretty, scaleIngredient } from '..
             </ion-button>
           }
         </div>
+        <app-recipe-comments [recipeId]="r.id" />
       } @else {
         <div class="state"><ion-spinner name="crescent"></ion-spinner></div>
       }
