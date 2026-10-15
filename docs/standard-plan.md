@@ -76,7 +76,8 @@ Each phase ships on its own as one release (or, for phase 0, with no app release
 ### Phase 0: safety first (no app release) — in progress
 - [x] `cld/deploy/backup/backup.py` written; dry run on the Pi restored 195 recipes
 - [x] CLAUDE.md, TASKS.md, COMMANDS.md, README Cost + Security
-- [ ] Drive OAuth + `.env` + cron (Alex), then a real backup + `--verify`
+- [x] Drive OAuth + `.env`; first backup to Drive and **restore tested** (195 recipes, 585 photos)
+- [ ] nightly cron line (Alex)
 - [ ] keystore on Drive, Uptime Kuma monitors (Alex)
 - **Daily backup to Google Drive** from the Pi: `pg_dump` of the recipe DB + Mealie's
   `mealie.db` and images, dated, 30 kept, encrypted. Alert on failure. **Restore tested once.**
