@@ -63,3 +63,8 @@ grep -q 'android:host="alex-recipe-book.web.app"' "$manifest"
 sed -i.orig 's|<application|<queries><package android:name="com.alex99ka.todoshop" /></queries><application|' "$manifest"
 rm "$manifest.orig"
 grep -q 'com.alex99ka.todoshop' "$manifest"
+
+# Updates download inside the app and open Android's installer (UpdateService.installApk).
+sed -i.orig 's|<application|<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /><application|' "$manifest"
+rm "$manifest.orig"
+grep -q 'REQUEST_INSTALL_PACKAGES' "$manifest"

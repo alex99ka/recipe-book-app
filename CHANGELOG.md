@@ -5,6 +5,17 @@ All notable changes to this app. The format follows
 [SemVer](https://semver.org/): a MAJOR version means native changes, so it needs
 the new APK; anything else arrives as an in-app update.
 
+## [4.0.0] - 2026-10-15
+
+Needs the new APK one last time, installed by hand. From this version on,
+updates that need an APK install from inside the app.
+
+### Changed
+- A new APK downloads inside the app, with its progress shown, and opens
+  Android's installer straight away. Through the browser the download sat at
+  100% waiting to be opened by hand. The first time, Android asks to allow
+  installs from this app.
+
 ## [3.0.0] - 2026-10-15
 
 Needs the new APK (Settings offers the download).
