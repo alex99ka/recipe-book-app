@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   AlertController,
   IonBackButton,
@@ -21,7 +22,7 @@ import {
   type SegmentCustomEvent,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { bookmarkOutline, cartOutline, linkOutline, logoTiktok, paperPlaneOutline, star, starHalf, starOutline } from 'ionicons/icons';
+import { bookmarkOutline, cartOutline, createOutline, linkOutline, logoTiktok, paperPlaneOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { ApiError, ApiService } from '../../core';
 import { Collection, RecipeDetail } from '../../models';
 import { AlertService, SendService, askTitle, pretty, scaleIngredient } from '../../shared';
@@ -30,6 +31,7 @@ import { AlertService, SendService, askTitle, pretty, scaleIngredient } from '..
   selector: 'app-recipe',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RouterLink,
     IonBackButton,
     IonButton,
     IonButtons,
@@ -69,6 +71,11 @@ import { AlertService, SendService, askTitle, pretty, scaleIngredient } from '..
       <ion-toolbar>
         <ion-buttons slot="start"><ion-back-button defaultHref="/home" text=""></ion-back-button></ion-buttons>
         <ion-title>{{ recipe()?.title ?? '' }}</ion-title>
+        @if (recipe(); as r) {
+          <ion-buttons slot="end">
+            <ion-button aria-label="עריכה" [routerLink]="['/recipe', r.id, 'edit']"><ion-icon slot="icon-only" name="create-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        }
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -206,7 +213,12 @@ export class RecipePage implements OnInit {
   );
 
   constructor() {
-    addIcons({ bookmarkOutline, cartOutline, linkOutline, logoTiktok, paperPlaneOutline, star, starHalf, starOutline });
+    addIcons({ bookmarkOutline, cartOutline, createOutline, linkOutline, logoTiktok, paperPlaneOutline, star, starHalf, starOutline });
+  }
+
+  /** Back from the edit screen, with whatever changed there. */
+  ionViewWillEnter(): void {
+    if (this.recipe()) void this.load();
   }
 
   ngOnInit(): void {

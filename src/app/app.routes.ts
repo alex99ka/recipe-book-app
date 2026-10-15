@@ -34,6 +34,21 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/settings/settings.page').then((m) => m.SettingsPage),
   },
   {
+    path: 'add',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/add/add.page').then((m) => m.AddPage),
+  },
+  {
+    path: 'recipe/:id/edit',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/edit/edit.page').then((m) => m.EditPage),
+  },
+  {
+    path: 'screen',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/screen/screen.page').then((m) => m.ScreenPage),
+  },
+  {
     path: 'friends',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/friends/friends.page').then((m) => m.FriendsPage),

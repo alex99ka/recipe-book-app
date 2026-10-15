@@ -3,6 +3,8 @@ import { RouterLink } from '@angular/router';
 import {
   AlertController,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonIcon,
   IonItem,
   IonLabel,
@@ -26,6 +28,8 @@ import { AlertService, NavBarComponent, RecipeListComponent, askTitle } from '..
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonContent,
+    IonFab,
+    IonFabButton,
     IonIcon,
     IonItem,
     IonLabel,
@@ -104,6 +108,9 @@ import { AlertService, NavBarComponent, RecipeListComponent, askTitle } from '..
         <ion-list-header>{{ query() ? 'תוצאות' : 'נוספו לאחרונה' }}</ion-list-header>
         <app-recipe-list data-tour="recent" [recipes]="shown()" [empty]="query() ? 'לא נמצא מתכון.' : 'הספר עוד ריק.'" />
       }
+      <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+        <ion-fab-button data-tour="add" routerLink="/add" aria-label="מתכון חדש"><ion-icon name="add"></ion-icon></ion-fab-button>
+      </ion-fab>
     </ion-content>
   `,
 })

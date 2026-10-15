@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { Capacitor } from '@capacitor/core';
 import {
   IonAvatar,
@@ -21,7 +22,7 @@ import {
   type RadioGroupCustomEvent,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { download, logoGithub, mapOutline, refresh, sparkles } from 'ionicons/icons';
+import { download, logoGithub, mapOutline, refresh, sparkles, tvOutline } from 'ionicons/icons';
 import { ApiService, AuthService, TourService, UpdateService } from '../../core';
 import { environment } from '../../../environments/environment';
 import { Me } from '../../models';
@@ -34,6 +35,7 @@ import { AlertService } from '../../shared';
     .version { font-variant-numeric: tabular-nums; }
   `,
   imports: [
+    RouterLink,
     IonAvatar,
     IonButtons,
     IonContent,
@@ -94,6 +96,13 @@ import { AlertService } from '../../shared';
               <ion-note>{{ m.createsThisMonth }} מתוך {{ m.createsPerMonth }} מתכונים חדשים החודש</ion-note>
             </ion-item>
           }
+          <ion-item button routerLink="/screen" detail>
+            <ion-icon slot="start" name="tv-outline" color="primary" aria-hidden="true"></ion-icon>
+            <ion-label>
+              המסך והיומנים
+              <p>{{ m.panel ? 'מחובר לספר הזה' : 'חיבור מסך עם קוד' }}</p>
+            </ion-label>
+          </ion-item>
         </ion-list>
       }
 
@@ -185,7 +194,7 @@ export class SettingsPage {
   });
 
   constructor() {
-    addIcons({ download, logoGithub, mapOutline, refresh, sparkles });
+    addIcons({ download, logoGithub, mapOutline, refresh, sparkles, tvOutline });
     this.api.me().then(
       (me) => this.me.set(me),
       (e: Error) => void this.alert.presentToast(e.message),

@@ -1,6 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { ApiErrorBody, Collection, Cookbook, Friend, InboxItem, Me, RecipeDetail, RecipeSummary } from '../models';
+import {
+  ApiErrorBody, CalendarFeed, Collection, Cookbook, Cost, Friend, InboxItem, Me, PanelState, PriceLine, RecipeDetail,
+  RecipePatch, RecipeSummary,
+} from '../models';
 import { AuthService } from './auth.service';
 
 const BOOK_KEY = 'recipes.book';
@@ -127,6 +130,68 @@ export class ApiService {
     return this.request('POST', `/inbox/${id}/${how}`);
   }
 
+  /** From a link (web page or cooking video) or pasted text. The Hebrew follows in the background. */
+  createRecipe(body: { url?: string; text?: string; collections: number[] }): Promise<{ id: string }> {
+    return this.request('POST', '/recipes', body);
+  }
+
+  /** From a photo or PDF of a recipe, with an optional photo of the dish. */
+  uploadRecipe(source: File, dish: File | null, collections: number[]): Promise<{ id: string }> {
+    const form = new FormData();
+    form.append('source', source);
+    if (dish) form.append('photo', dish);
+    form.append('collections', collections.join(','));
+    return this.request('POST', '/recipes/upload', form);
+  }
+
+  updateRecipe(id: string, patch: RecipePatch): Promise<RecipeDetail> {
+    return this.request('PATCH', `/recipes/${encodeURIComponent(id)}`, patch);
+  }
+
+  deleteRecipe(id: string): Promise<void> {
+    return this.request('DELETE', `/recipes/${encodeURIComponent(id)}`);
+  }
+
+  setPhoto(id: string, photo: File): Promise<{ image: string | null }> {
+    const form = new FormData();
+    form.append('photo', photo);
+    return this.request('PUT', `/recipes/${encodeURIComponent(id)}/photo`, form);
+  }
+
+  /** Prices as typed ("12.90", "" for none); the server parses them. */
+  setPrices(id: string, lines: { line: string; price: string }[]): Promise<{ prices: PriceLine[]; cost: Cost | null }> {
+    return this.request('PUT', `/recipes/${encodeURIComponent(id)}/prices`, lines);
+  }
+
+  panel(): Promise<PanelState> {
+    return this.get<PanelState>('/panel');
+  }
+
+  /** With the code the unlinked screen shows. */
+  linkPanel(code: string): Promise<PanelState> {
+    return this.request('POST', '/panel/link', { code });
+  }
+
+  unlinkPanel(): Promise<void> {
+    return this.request('DELETE', '/panel');
+  }
+
+  calendars(): Promise<CalendarFeed[]> {
+    return this.get<CalendarFeed[]>('/calendars');
+  }
+
+  addCalendar(url: string, name: string): Promise<{ name: string; upcoming: number }> {
+    return this.request('POST', '/calendars', { url, name });
+  }
+
+  renameCalendar(index: number, name: string): Promise<void> {
+    return this.request('PATCH', `/calendars/${index}`, { name });
+  }
+
+  deleteCalendar(index: number): Promise<void> {
+    return this.request('DELETE', `/calendars/${index}`);
+  }
+
   /** Image and cover paths are signed by the server and need no token, so they go straight into <img>. */
   imageUrl(path: string | null): string | null {
     return path ? this.origin + path : null;
@@ -145,7 +210,9 @@ export class ApiService {
     if (this.book()) {
       headers['X-Book'] = this.book();
     }
-    if (body !== undefined) {
+    // FormData sets its own multipart Content-Type, boundary included.
+    const form = body instanceof FormData;
+    if (body !== undefined && !form) {
       headers['Content-Type'] = 'application/json';
     }
     let res: Response;
@@ -153,7 +220,7 @@ export class ApiService {
       res = await fetch(environment.apiUrl + path, {
         method,
         headers,
-        body: body === undefined ? undefined : JSON.stringify(body),
+        body: body === undefined ? undefined : form ? (body as FormData) : JSON.stringify(body),
       });
     } catch {
       throw new ApiError(0, 'offline', 'אין חיבור לשרת המתכונים.');

@@ -19,6 +19,31 @@ export interface Me {
   createsPerMonth: number | null;
   /** Items friends sent that are waiting in the inbox. */
   inbox: number;
+  /** The TRMNL screen is linked to this book. */
+  panel: boolean;
+}
+
+/** Whose the TRMNL screen is: this book's, nobody's (it shows a code), or another book's. */
+export interface PanelState {
+  state: 'mine' | 'free' | 'taken';
+}
+
+/** A calendar feed on the screen's idle page. The address stays on the server. */
+export interface CalendarFeed {
+  index: number;
+  name: string;
+  shade: number;
+  host: string;
+  /** Events in the next 30 days; null when the feed couldn't be read. */
+  upcoming: number | null;
+  error: string;
+}
+
+export interface RecipePatch {
+  name?: string;
+  tags?: string[];
+  categories?: string[];
+  sourceUrl?: string;
 }
 
 /** An account you can send copies to; separate from households. */
