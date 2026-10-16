@@ -1,3 +1,7 @@
+> **Archived.** This is the Ionic app, versions up to 4.x. The app is now Flutter, in
+> [alex99ka/recipe-book](https://github.com/alex99ka/recipe-book) (5.x, same Android id
+> and key, so it installs over 4.x). Nothing here is maintained.
+
 [![CI](https://github.com/alex99ka/recipe-book-app/actions/workflows/ci.yml/badge.svg)](https://github.com/alex99ka/recipe-book-app/actions/workflows/ci.yml)
 [![Release](https://github.com/alex99ka/recipe-book-app/actions/workflows/release.yml/badge.svg)](https://github.com/alex99ka/recipe-book-app/actions/workflows/release.yml)
 
