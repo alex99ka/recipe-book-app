@@ -88,7 +88,7 @@ Each phase ships on its own as one release (or, for phase 0, with no app release
 - *You notice:* nothing. *Risk:* none to data. *Verified:* a restore into a throwaway
   Postgres/Mealie shows the same recipe count.
 
-### Phase 1a: Flutter app, reading parity, prerelease to Alex only (5.0.0) — built, not released
+### Phase 1a: Flutter app, reading parity, prerelease to Alex only (5.0.0) — done 2026-10-16 (5.0.1 on Alex's phone)
 - [x] `C:\claude projects\recipe-book` from app-shell, id `com.alex99ka.recipes`, versionCode 5000000
 - [x] screens below; analyze clean, 29 app tests; server 55 tests (4 new)
 - [x] min version and early users from the **server** (`/app-config`, `/me.early`), not
@@ -108,10 +108,12 @@ Each phase ships on its own as one release (or, for phase 0, with no app release
   (shared project), deployed first with your OK.
 - *Verified:* golden recipe screens against the live server; update 5.0.0 → 5.0.1 on your phone.
 
-### Phase 1b: full parity, released to everyone (5.1.0)
+### Phase 1b: full parity, released to everyone (5.1.0) — built 2026-10-16, waiting for the 5.1.0 prerelease
 - Add, edit (photo, prices, delete), friends + invite links (App Link), inbox, screen
   linking + calendars, the tour with `since` tags.
-- Promote to a full release once you confirm. 4.x apps then install it from inside the app.
+- Promote to a full release once you confirm. Then, once, the same APK as release 5.1.0 in
+  this repo: 4.x apps check only here, see a new major version and offer to install it.
+  The web gets Angular's safety worker at `ngsw-worker.js`, so the old PWA steps aside.
 - *You notice:* everyone signs in once. *Verified:* every 4.x flow done on the Flutter app.
 
 ### Phase 2: sign-in, errors, settings set (5.2.0)
